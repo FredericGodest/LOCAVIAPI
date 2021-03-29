@@ -21,8 +21,11 @@ router.get('/', function (req, res) {
 var adviceController = require('./controllers/adviceController');
 
 // Advice routes
-router.get('/advice', adviceController.index);
+router.get('/advice/all', adviceController.index);
 router.post('/advice', adviceController.new);
+router.get('/advice/:id', adviceController.searchById);
+router.put('/advice/:id', adviceController.update);
+router.delete('/advice/:id', adviceController.delete);
 
 // Export API routes
 module.exports = router;
