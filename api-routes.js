@@ -31,6 +31,7 @@ router.delete('/advice/:id', adviceController.delete);
 
 // Estate routes
 router.get('/estate/all', estateController.index);
+router.get('/estate/location', estateController.searchByLocation);
 router.post('/estate', estateController.new);
 router.get('/estate/:id', estateController.searchById);
 router.put('/estate/:id', estateController.update);
