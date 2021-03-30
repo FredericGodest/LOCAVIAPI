@@ -1,19 +1,14 @@
 var mongoose = require('mongoose');
 
 var adviceSchema = mongoose.Schema({
+  estateId: { type: String, required: true },
   userId: { type: String, required: true },
   create_date: {type: Date, default: Date.now },
   update_date: { type: Date },
-  //date_in: {type: DataCue, required: true},
-  //date_out: {type: DataCue, required: true},
-  address: { type: String, required: true },
-  appartment_number: { type: String }, // appartment number is filled by the prop
-  longitude: { type: Number, required: true }, //with Geocoder
-  latitude: { type: Number, required: true }, //with Geocoder
-  type: { type: String, required: true }, // Appart or house
+  date_in: {type: Date, required: true},
+  date_out: {type: Date, required: true},
   comments: { type: String }, 
-  imageUrl: { type: String }, 
-  surface: { type: Number, required: true }, //m2
+  
   ratings: {
     thermal: { type: Number, required: true },
     sound: { type: Number, required: true },

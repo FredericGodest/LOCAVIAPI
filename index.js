@@ -1,7 +1,7 @@
 // Import package.json data
 const _package = require('./package.json')
 // Import db config
-if(process.env.NODE_ENV !== "production"){ const dbConfig = require('./db.config'); }
+if(process.env.NODE_ENV !== "production"){ const dbConfig = require('./db.config.js'); }
 // Import express
 let express = require('express');
 // Import Body parser

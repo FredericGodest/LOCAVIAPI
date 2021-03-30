@@ -1,4 +1,4 @@
 # dependencies
 /node_modules
 # Database configuration
-db.config
+db.config.js
