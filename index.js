@@ -1,4 +1,6 @@
 const app = require('./server.js')
+// Setup server port
+var port = process.env.PORT || 8080;
 // Launch app to listen to specified port
 app.listen(port, function () {
     process.stdout.write('\x1b[0m');
