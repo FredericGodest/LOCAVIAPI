@@ -5,10 +5,6 @@ var port = process.env.PORT || 8080;
 // Initialize express router
 let router = require('express').Router();
 
-const http = require("http")
-const io = require("socket.io");
-const socket = io(http);
-
 // Set default API response
 router.get('/', function (req, res) {
     res.json({
