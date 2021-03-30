@@ -21,13 +21,6 @@ let app = express();
 // Import routes
 let apiRoutes = require("./api-routes");
 
-// Print Database Configuration Informations
-console.log(" Connection to LOCAVI database :")
-process.stdout.write("  Host : ")
-console.log('\x1b[36m%s\x1b[0m', process.env.HOST);
-process.stdout.write("  Database : ")
-console.log('\x1b[36m%s\x1b[0m', process.env.DB);
-
 // Connect to Mongoose and set connection variable
 mongoose.connect(`mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.HOST}/${process.env.DB}?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
         .then(() => {process.stdout.write(" LOCAVI database : "); console.log('\x1b[32m%s\x1b[0m', `connected`)})
