@@ -12,9 +12,9 @@ afterAll(done => {
   done()
 })
 
-describe('📄 Testing advices routes', () => {
-  it('should get all advices', async () => {
-    const res = await request(app).get('/advice/all')
+describe('🏠 Testing estates routes', () => {
+  it('should get all estates', async () => {
+    const res = await request(app).get('/estate/all')
     expect(res.statusCode).toEqual(200)
   })
 })

@@ -11,11 +11,15 @@ process.env.USERNAME="XXXXX",
 process.env.PASSWORD="XXXXXXXXXXXX",
 process.env.HOST= "xxxxxxxxx.xxxxx.mongodb.net",
 process.env.DB= "XXXXXXXX"
-process.env.SESS_SECRET="XXXXXXXXXXXXXXXXX"
 ```
 ## Usage
 
 To run the API on localhost, simply execute :
 ```node
 nodemon index
+```
+
+## Test
+```node
+npm run test
 ```

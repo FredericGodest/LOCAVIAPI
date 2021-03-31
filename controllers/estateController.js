@@ -25,6 +25,10 @@ exports.new = (req, res, next) => {
         address: req.body.address,
         type: req.body.type,
         appartment_number: req.body.appartment_number,
+        location: {
+         type: "Point",
+         coordinates: [ req.body.longitude, req.body.latitude]
+        },
         longitude: req.body.longitude,
         latitude: req.body.latitude,
         description: req.body.description,
@@ -64,6 +68,26 @@ exports.searchById = (req, res, next) => {
     );
 };
 
+exports.searchByLocation = function (req, res) {
+ Estate.find({
+   "location": {
+       "$geoWithin": {
+           "$centerSphere": [ [ req.body.longitude, req.body.latitude ], req.body.radius / 6378.1 ] //Divide radians by the equatorial radius of Earth
+       }
+   }
+ }).then(
+   (estates) => {
+     res.status(200).json(estates);
+   }
+ ).catch(
+   (error) => {
+     res.status(404).json({
+       error: error
+     });
+   }
+ );
+};
+
 exports.update = (req, res, next) => {
     const estate = new Estate({
         _id: req.params.id,
@@ -73,8 +97,10 @@ exports.update = (req, res, next) => {
         address: req.body.address,
         type: req.body.type,
         appartment_number: req.body.appartment_number,
-        longitude: req.body.longitude,
-        latitude: req.body.latitude,
+        location: {
+         type: "Point",
+         coordinates: [ req.body.longitude, req.body.latitude]
+        },
         description: req.body.description,
         image_url: req.body.image_url,
         surface: req.body.surface,

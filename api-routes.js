@@ -5,10 +5,6 @@ var port = process.env.PORT || 8080;
 // Initialize express router
 let router = require('express').Router();
 
-const http = require("http")
-const io = require("socket.io");
-const socket = io(http);
-
 // Set default API response
 router.get('/', function (req, res) {
     res.json({
@@ -31,6 +27,7 @@ router.delete('/advice/:id', adviceController.delete);
 
 // Estate routes
 router.get('/estate/all', estateController.index);
+router.get('/estate/location', estateController.searchByLocation);
 router.post('/estate', estateController.new);
 router.get('/estate/:id', estateController.searchById);
 router.put('/estate/:id', estateController.update);
