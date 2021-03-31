@@ -34,7 +34,7 @@ router.get('/estate/all', estateController.index);
 router.post('/estate', estateController.new);
 router.get('/estate/:id', estateController.searchById);
 router.put('/estate/:id', estateController.update);
-router.delete('estate/:id', estateController.delete);
+router.delete('/estate/:id', estateController.delete);
 
 // Export API routes
 module.exports = router;
