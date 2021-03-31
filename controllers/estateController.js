@@ -1,6 +1,4 @@
-//const e = require('cors');
-
-Estate = require('../models/estateModel');
+const Estate = require('../models/estateModel');
 
 exports.index = (req, res, next) => {
     Estate.find().then(

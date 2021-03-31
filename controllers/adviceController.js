@@ -1,6 +1,4 @@
-//const e = require('cors');
-
-Advice = require('../models/adviceModel');
+const Advice = require('../models/adviceModel');
 
 exports.index = (req, res, next) => {
     Advice.find().then(
