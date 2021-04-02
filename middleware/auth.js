@@ -12,6 +12,6 @@ module.exports = (req, res, next) => {
       next();
     }
   } catch ( error ) {
-    res.status(401)({ error: error | 'Request without authentification'});
+    res.status(401).json({ error: error | 'Request without authentification'});
   }
-};  
+};

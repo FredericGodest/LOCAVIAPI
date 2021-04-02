@@ -5,7 +5,15 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "cross-env NODE_ENV=test jest --verbose --testTimeout=10000"
+    "test": "cross-env NODE_ENV=test jest --coverage --detectOpenHandles --verbose --testTimeout=10000"
+  },
+  "jest": {
+    "collectCoverage": "true",
+    "coverageReporter": [
+      "lcov"
+    ],
+    "coverageDirectory": "./output/code-coverage/",
+    "reporters": ["default", "./node_modules/jest-html-reporter"]
   },
   "author": "",
   "license": "",
@@ -18,6 +26,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "helmet": "^4.1.1",
+    "jest-html-reporter": "^3.3.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.7",
     "mongoose-unique-validator": "^2.0.3",
