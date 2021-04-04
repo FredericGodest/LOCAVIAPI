@@ -21,7 +21,7 @@ var estateSchema = mongoose.Schema({
     description: { type: String, required: true },
     imageUrl: { type: String },
     surface: { type: Number, required: true },//m2
-    location: [locationSchema]
+    location: {locationSchema}
 });
 
 // Export model

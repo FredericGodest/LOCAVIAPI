@@ -27,8 +27,6 @@ exports.new = (req, res, next) => {
          type: "Point",
          coordinates: [ req.body.longitude, req.body.latitude]
         },
-        longitude: req.body.longitude,
-        latitude: req.body.latitude,
         description: req.body.description,
         image_url: req.body.image_url,
         surface: req.body.surface,
@@ -36,8 +34,9 @@ exports.new = (req, res, next) => {
     });
 
     estate.save().then(
-      () => {
+      (estate) => {
         res.status(201).json({
+          id: estate.id,
           message: 'Estate saved successfully!'
         });
       }

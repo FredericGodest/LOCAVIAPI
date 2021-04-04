@@ -26,10 +26,10 @@ exports.new = (req, res, next) => {
     const advice = new Advice({
         estateId: req.body.estateId,
         userId: req.body.userId,
-        date_in: req.body.date_in,
-        date_out: req.body.date_out,
-        comments: req.body.comments,
-        
+        dateIn: req.body.dateIn,
+        dateOut: req.body.dateOut,
+        comment: req.body.comment,
+
         ratings:{
             thermal: thermal,
             sound: sound,
@@ -44,8 +44,9 @@ exports.new = (req, res, next) => {
     });
 
     advice.save().then(
-      () => {
+      (advice) => {
         res.status(201).json({
+          id: advice.id,
           message: 'Post saved successfully!'
         });
       }
@@ -87,10 +88,10 @@ exports.update = (req, res, next) => {
         _id: req.params.id,
         estateId: req.body.estateId,
         userId: req.body.userId,
-        date_in: req.body.date_in,
-        date_out: req.body.date_out,
-        comments: req.body.comments,
-        
+        dateIn: req.body.dateIn,
+        dateOut: req.body.dateOut,
+        comment: req.body.comment,
+
         ratings:{
             thermal: thermal,
             sound: sound,
@@ -100,7 +101,7 @@ exports.update = (req, res, next) => {
             brightness: brightness,
             final: final,
         },
-        
+
         update_date : Date.now(),
     });
 
@@ -134,4 +135,3 @@ exports.delete = (req, res, next) => {
       }
     );
 };
-  

@@ -5,10 +5,10 @@ var adviceSchema = mongoose.Schema({
   userId: { type: String, required: true },
   create_date: {type: Date, default: Date.now },
   update_date: { type: Date },
-  date_in: {type: Date, required: true},
-  date_out: {type: Date, required: true},
-  comments: { type: String }, 
-  
+  dateIn: {type: Date, required: true},
+  dateOut: {type: Date, required: true},
+  comment: { type: String },
+
   ratings: {
     thermal: { type: Number, required: true },
     sound: { type: Number, required: true },
