@@ -25,7 +25,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-      env:
+    - name: Create .env file
+      uses: SpicyPizza/create-envfile@v1
+      with:
         USERNAME: ${{ secrets.USERNAME }}
         PASSWORD: ${{ secrets.PASSWORD }}
         HOST: ${{ secrets.HOST }}
