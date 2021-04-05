@@ -8,6 +8,14 @@
     "test": "cross-env NODE_ENV=test jest --coverage --detectOpenHandles --verbose --testTimeout=10000"
   },
   "jest": {
+    "collectCoverage": true,
+    "coverageReporters": [
+      "lcov"
+    ],
+    "coverageDirectory": "./coverage",
+    "reporters": [
+      "default"
+    ],
     "testEnvironment": "node",
     "coveragePathIgnorePatterns": [
       "/node_modules/"
@@ -24,7 +32,6 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "helmet": "^4.1.1",
-    "jest-html-reporter": "^3.3.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.7",
     "mongoose-unique-validator": "^2.0.3",

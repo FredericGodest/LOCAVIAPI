@@ -3,6 +3,7 @@ const app = require('../server')
 let mongoose = require('mongoose');
 
 beforeAll(done => {
+  randomUsername = Math.random().toString(36);
   request(app)
     .post('/login')
     .send({
@@ -24,8 +25,8 @@ afterAll(done => {
 });
 
 
-describe('🏠⚠ Testing error handlers of users routes ', () => {
-    test('Create a users with wrong data', async (done) => {
+describe('🧑⚠ Testing error handlers of users routes ', () => {
+    test('Create an user with wrong data', async (done) => {
       return await request(app)
         .post('/signup')
         .send({
@@ -42,7 +43,7 @@ describe('🏠⚠ Testing error handlers of users routes ', () => {
         })
     });
 
-    test('Create a users with already created email', async (done) => {
+    test('Create an user with already created email', async (done) => {
         return await request(app)
           .post('/signup')
           .send({
@@ -59,7 +60,7 @@ describe('🏠⚠ Testing error handlers of users routes ', () => {
           })
     });
 
-    test('Create a users with already created usename', async (done) => {
+    test('Create an user with already created usename', async (done) => {
         return await request(app)
           .post('/signup')
           .send({
@@ -76,7 +77,7 @@ describe('🏠⚠ Testing error handlers of users routes ', () => {
           })
     });
 
-    test('Login a users with missing data', async (done) => {
+    test('Login an user with missing data', async (done) => {
         return await request(app)
           .post('/login')
           .send({
@@ -92,7 +93,7 @@ describe('🏠⚠ Testing error handlers of users routes ', () => {
           })
     });
 
-    test('Login a users with wrong data', async (done) => {
+    test('Login an user with wrong data', async (done) => {
         return await request(app)
           .post('/login')
           .send({
@@ -108,7 +109,7 @@ describe('🏠⚠ Testing error handlers of users routes ', () => {
           })
     });
 
-    test('Login a users with wrong password', async (done) => {
+    test('Login an user with wrong password', async (done) => {
         return await request(app)
           .post('/login')
           .send({
@@ -126,13 +127,13 @@ describe('🏠⚠ Testing error handlers of users routes ', () => {
 });
 
 
-describe('🏠⚠ Testing users routes ', () => {
-    test('Create a users', (done) => {
+describe('🧑 Testing users routes ', () => {
+    test('Create an user', (done) => {
       return request(app)
         .post('/signup')
         .send({
-          username:"test",
-          email:"email-test@gmail.com",
+          username:randomUsername,
+          email:randomUsername + "@gmail.com",
           password:"azerty"
         })
         .then((response) => {
