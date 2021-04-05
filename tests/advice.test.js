@@ -14,15 +14,16 @@ beforeAll(done => {
       userId = response.body.userId;
       done();
     });
-})
+});
 
 afterAll(done => {
   // Closing the DB connection allows Jest to exit successfully.
   mongoose.connection.close()
   done()
-})
+});
+
 describe('📄⚠ Testing error handlers of advices routes', () => {
-  test('Create an advice with wrong data', (done) => {
+  test('Create an advice with wrong data', async (done) => {
     return request(app)
       .post('/advice')
       .set('Authorization', `Bearer ${token}`)
@@ -48,7 +49,7 @@ describe('📄⚠ Testing error handlers of advices routes', () => {
        console.log(err)
       })
   });
-  test('Find an advice by wrong id', (done) => {
+  test('Find an advice by wrong id', async (done) => {
     return request(app)
       .get(`/advice/t`)
       .set('Authorization', `Bearer ${token}`)
@@ -60,7 +61,7 @@ describe('📄⚠ Testing error handlers of advices routes', () => {
        console.log(err)
       })
   });
-  test('Update an advice with wrong id', (done) => {
+  test('Update an advice with wrong id', async (done) => {
     return request(app)
       .put(`/advice/t`)
       .set('Authorization', `Bearer ${token}`)
@@ -87,7 +88,7 @@ describe('📄⚠ Testing error handlers of advices routes', () => {
        console.log(err)
       })
   });
-  test('Delete an advice with wrong id', (done) => {
+  test('Delete an advice with wrong id', async (done) => {
     return request(app)
       .delete(`/advice/t`)
       .set('Authorization', `Bearer ${token}`)
@@ -101,7 +102,7 @@ describe('📄⚠ Testing error handlers of advices routes', () => {
   });
 });
 describe('📄✔ Testing advices routes', () => {
-  test('Get all advices', (done) => {
+  test('Get all advices', async (done) => {
     return request(app)
       .get('/advice/all')
       .set('Authorization', `Bearer ${token}`)
@@ -109,9 +110,11 @@ describe('📄✔ Testing advices routes', () => {
         expect(response.statusCode).toBe(200);
         expect(response.type).toBe('application/json');
         done();
+      }).catch((err) => {
+        console.log(err)
       });
   });
-  test('Create an advice', (done) => {
+  test('Create an advice', async (done) => {
     return request(app)
       .post('/advice')
       .set('Authorization', `Bearer ${token}`)
@@ -139,7 +142,7 @@ describe('📄✔ Testing advices routes', () => {
        console.log(err)
       })
   });
-  test('Find an advice by id', (done) => {
+  test('Find an advice by id', async (done) => {
     return request(app)
       .get(`/advice/${id}`)
       .set('Authorization', `Bearer ${token}`)
@@ -151,7 +154,7 @@ describe('📄✔ Testing advices routes', () => {
        console.log(err)
       })
   });
-  test('Update an advice', (done) => {
+  test('Update an advice', async (done) => {
     return request(app)
       .put(`/advice/${id}`)
       .set('Authorization', `Bearer ${token}`)
@@ -178,7 +181,7 @@ describe('📄✔ Testing advices routes', () => {
        console.log(err)
       })
   });
-  test('Delete an advice', (done) => {
+  test('Delete an advice', async (done) => {
     return request(app)
       .delete(`/advice/${id}`)
       .set('Authorization', `Bearer ${token}`)

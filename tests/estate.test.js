@@ -14,13 +14,14 @@ beforeAll(done => {
       userId = response.body.userId;
       done();
     });
-})
+});
 
 afterAll(done => {
   // Closing the DB connection allows Jest to exit successfully.
   mongoose.connection.close()
   done()
-})
+});
+
 describe('🏠⚠ Testing error handlers of estates routes ', () => {
   test('Create an estate with wrong data', async (done) => {
     return await request(app)
@@ -49,7 +50,7 @@ describe('🏠⚠ Testing error handlers of estates routes ', () => {
        console.log(err)
       })
   });
-  test('Find an estate with wrong id', (done) => {
+  test('Find an estate with wrong id', async (done) => {
     return request(app)
       .get(`/estate/t`)
       .set('Authorization', `Bearer ${token}`)
@@ -78,7 +79,7 @@ describe('🏠⚠ Testing error handlers of estates routes ', () => {
        console.log(err)
       })
   });
-  test('Update an estate with wrong id', (done) => {
+  test('Update an estate with wrong id', async (done) => {
     return request(app)
       .put(`/estate/t`)
       .set('Authorization', `Bearer ${token}`)
@@ -104,7 +105,7 @@ describe('🏠⚠ Testing error handlers of estates routes ', () => {
        console.log(err)
       })
   });
-  test('Delete an estate with wrond id', (done) => {
+  test('Delete an estate with wrond id', async (done) => {
     return request(app)
       .delete(`/estate/t`)
       .set('Authorization', `Bearer ${token}`)
@@ -118,7 +119,7 @@ describe('🏠⚠ Testing error handlers of estates routes ', () => {
   });
 });
 describe('🏠✔ Testing estates routes', () => {
-  test('Get all estates', (done) => {
+  test('Get all estates', async (done) => {
     return request(app)
       .get('/estate/all')
       .set('Authorization', `Bearer ${token}`)
@@ -126,6 +127,8 @@ describe('🏠✔ Testing estates routes', () => {
         expect(response.statusCode).toBe(200);
         expect(response.type).toBe('application/json');
         done();
+      }).catch((err) => {
+        console.log(err)
       });
   });
   test('Create an estate', async (done) => {
@@ -172,7 +175,7 @@ describe('🏠✔ Testing estates routes', () => {
        console.log(err)
       })
   });
-  test('Find an estate by id', (done) => {
+  test('Find an estate by id', async (done) => {
     return request(app)
       .get(`/estate/${id}`)
       .set('Authorization', `Bearer ${token}`)
@@ -184,7 +187,7 @@ describe('🏠✔ Testing estates routes', () => {
        console.log(err)
       })
   });
-  test('Update an estate', (done) => {
+  test('Update an estate', async (done) => {
     return request(app)
       .put(`/estate/${id}`)
       .set('Authorization', `Bearer ${token}`)
@@ -210,7 +213,7 @@ describe('🏠✔ Testing estates routes', () => {
        console.log(err)
       })
   });
-  test('Delete an estate', (done) => {
+  test('Delete an estate', async (done) => {
     return request(app)
       .delete(`/estate/${id}`)
       .set('Authorization', `Bearer ${token}`)
