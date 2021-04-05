@@ -28,10 +28,10 @@ jobs:
     - name: Create .env file
       uses: SpicyPizza/create-envfile@v1
       with:
-        USERNAME: ${{ secrets.USERNAME }}
-        PASSWORD: ${{ secrets.PASSWORD }}
-        HOST: ${{ secrets.HOST }}
-        DB: ${{ secrets.DB }}
+        envkey_USERNAME: ${{ secrets.USERNAME }}
+        envkey_PASSWORD: ${{ secrets.PASSWORD }}
+        envkey_HOST: ${{ secrets.HOST }}
+        envkey_DB: ${{ secrets.DB }}
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
