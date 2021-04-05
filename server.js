@@ -1,7 +1,7 @@
 // Import package.json data
 const _package = require('./package.json')
 // Import db config
-if(process.env.NODE_ENV !== "production"){ const dbConfig = require('./db.config.js'); }
+if(process.env.GITHUB_ACTIONS !== "true"){ const dbConfig = require('./db.config.js'); }
 // Import express
 let express = require('express');
 // Import Body parser
@@ -10,10 +10,6 @@ let bodyParser = require('body-parser');
 let cors = require("cors");
 // Import helmet
 var helmet = require('helmet');
-// Import Express session
-var session = require('express-session')
-// Import Connect Mongo session
-var MongoStore = require('connect-mongo')(session);
 // Import Mongoose
 let mongoose = require('mongoose');
 // Initialise the app
@@ -25,8 +21,6 @@ let apiRoutes = require("./api-routes");
 mongoose.connect(`mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.HOST}/${process.env.DB}?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
         .then(() => {})
         .catch((err) => console.log('\x1b[31m', 'Error connecting db', err));
-
-var sessionStore = new MongoStore({ mongooseConnection: mongoose.connection, autoRemove: 'interval', autoRemoveInterval: 3600  });
 
 // Configure bodyparser to handle post requests
 app.use(bodyParser.urlencoded({extended: true}));
@@ -49,18 +43,20 @@ app.use(helmet());
 // Use Api routes in the App
 app.use('/', apiRoutes);
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  var err = new Error('Error 404 - Not found');
-  err.status = 404;
-  next(err);
+app.use((req, res, next) => {
+  const error = new Error("Not found");
+  error.status = 404;
+  next(error);
 });
 
-// error handler
-// define as the last app.use callback
-app.use(function (err, req, res, next) {
-  res.status(err.status || 500);
-  res.send(err.message);
+// error handler middleware
+app.use((error, req, res, next) => {
+  res.status(error.status || 500).send({
+    error: {
+      status: error.status || 500,
+      message: error.message || 'Internal Server Error',
+    },
+  });
 });
 
 module.exports = app

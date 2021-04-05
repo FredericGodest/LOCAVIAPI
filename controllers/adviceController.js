@@ -47,7 +47,7 @@ exports.new = (req, res, next) => {
       (advice) => {
         res.status(201).json({
           id: advice.id,
-          message: 'Post saved successfully!'
+          message: 'Advice saved successfully!'
         });
       }
     ).catch(

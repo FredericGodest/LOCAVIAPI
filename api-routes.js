@@ -5,14 +5,6 @@ var port = process.env.PORT || 8080;
 // Initialize express router
 let router = require('express').Router();
 
-// Set default API response
-router.get('/', function (req, res) {
-    res.json({
-        status: 'LOCAVI API is working',
-        message: 'LOCAVI API'
-    });
-});
-
 // Import controllers
 var adviceController = require('./controllers/adviceController');
 var estateController = require('./controllers/estateController');
@@ -25,7 +17,6 @@ router.get('/advice/:id', adviceController.searchById);
 router.put('/advice/:id', auth, adviceController.update);
 router.delete('/advice/:id', auth, adviceController.delete);
 
-
 // Estate routes
 router.get('/estate/all', auth, estateController.index);
 router.get('/estate/location', estateController.searchByLocation);
@@ -33,7 +24,6 @@ router.post('/estate', auth, estateController.new);
 router.get('/estate/:id', estateController.searchById);
 router.put('/estate/:id', auth, estateController.update);
 router.delete('/estate/:id', auth, estateController.delete);
-
 
 // Users routes
 router.post('/signup', userController.signup);

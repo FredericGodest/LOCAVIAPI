@@ -10,7 +10,8 @@ beforeAll(done => {
       password: "azerty",
     })
     .end((err, response) => {
-      token = response.body.token; // save the token!
+      token = response.body.token;
+      userId = response.body.userId;
       done();
     });
 })
@@ -20,19 +21,104 @@ afterAll(done => {
   mongoose.connection.close()
   done()
 })
-
-describe('🏠 Testing estates routes', () => {
-  // token not being sent - should respond with a 401
-  test('It should require authorization', (done) => {
-    return request(app)
-      .get('/estate/all')
+describe('🏠⚠ Testing error handlers of estates routes ', () => {
+  test('Create an estate with wrong data', async (done) => {
+    return await request(app)
+      .post('/estate')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        title:"estate title test",
+        description: "estate description test",
+        userId:userId,
+        //Missing address for test
+        type: "house",
+        appartment_number: "42",
+        location: {
+         type: "Point",
+         coordinates: [1.9, 47.2]
+        },
+        image_url: "url",
+        surface: 120
+      })
       .then((response) => {
-        expect(response.statusCode).toBe(401);
+        id = response.body.id;
+        expect(response.statusCode).toBe(400);
+        expect(response.type).toBe('application/json');
         done();
-      });
+      }).catch((err) => {
+       console.log(err)
+      })
   });
-  // send the token - should respond with a 200
-  test('It should get all estates', (done) => {
+  test('Find an estate with wrong id', (done) => {
+    return request(app)
+      .get(`/estate/t`)
+      .set('Authorization', `Bearer ${token}`)
+      .then((response) => {
+        expect(response.statusCode).toBe(404);
+        expect(response.type).toBe('application/json');
+        done();
+      }).catch((err) => {
+       console.log(err)
+      })
+  });
+  test('Find estates by location with wrong data', async (done) => {
+    return await request(app)
+      .get(`/estate/location`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        //Missing longitude for test
+        latitude: 49.2,
+        radius:100
+      })
+      .then((response) => {
+        expect(response.statusCode).toBe(404);
+        expect(response.type).toBe('application/json');
+        done();
+      }).catch((err) => {
+       console.log(err)
+      })
+  });
+  test('Update an estate with wrong id', (done) => {
+    return request(app)
+      .put(`/estate/t`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        title:"estate title test",
+        description: "estate description test",
+        userId:userId,
+        address: "42, answer of Universe",
+        type: "house",
+        appartment_number: "42",
+        location: {
+         type: "Point",
+         coordinates: [1.9, 47.2]
+        },
+        image_url: "url",
+        surface: 120
+      })
+      .then((response) => {
+        expect(response.statusCode).toBe(400);
+        expect(response.type).toBe('application/json');
+        done();
+      }).catch((err) => {
+       console.log(err)
+      })
+  });
+  test('Delete an estate with wrond id', (done) => {
+    return request(app)
+      .delete(`/estate/t`)
+      .set('Authorization', `Bearer ${token}`)
+      .then((response) => {
+        expect(response.statusCode).toBe(400);
+        expect(response.type).toBe('application/json');
+        done();
+      }).catch((err) => {
+       console.log(err)
+      })
+  });
+});
+describe('🏠✔ Testing estates routes', () => {
+  test('Get all estates', (done) => {
     return request(app)
       .get('/estate/all')
       .set('Authorization', `Bearer ${token}`)
@@ -42,14 +128,14 @@ describe('🏠 Testing estates routes', () => {
         done();
       });
   });
-  test('It should create an estate', async (done) => {
+  test('Create an estate', async (done) => {
     return await request(app)
       .post('/estate')
       .set('Authorization', `Bearer ${token}`)
       .send({
         title:"estate title test",
         description: "estate description test",
-        userId:"60673634fc7e3e0cc4d3e0b8",
+        userId:userId,
         address: "42, answer of Universe",
         type: "house",
         appartment_number: "42",
@@ -62,16 +148,31 @@ describe('🏠 Testing estates routes', () => {
       })
       .then((response) => {
         id = response.body.id;
-        console.log(response)
         expect(response.statusCode).toBe(201);
         expect(response.type).toBe('application/json');
-
         done();
       }).catch((err) => {
        console.log(err)
       })
   });
-  test('It should find an estate by id', (done) => {
+  test('Find estates by location', async (done) => {
+    return await request(app)
+      .get(`/estate/location`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        longitude:1.7,
+        latitude: 49.2,
+        radius:100
+      })
+      .then((response) => {
+        expect(response.statusCode).toBe(200);
+        expect(response.type).toBe('application/json');
+        done();
+      }).catch((err) => {
+       console.log(err)
+      })
+  });
+  test('Find an estate by id', (done) => {
     return request(app)
       .get(`/estate/${id}`)
       .set('Authorization', `Bearer ${token}`)
@@ -83,14 +184,14 @@ describe('🏠 Testing estates routes', () => {
        console.log(err)
       })
   });
-  test('It should update an estate', (done) => {
+  test('Update an estate', (done) => {
     return request(app)
       .put(`/estate/${id}`)
       .set('Authorization', `Bearer ${token}`)
       .send({
         title:"estate title test",
         description: "estate description test",
-        userId:"60673634fc7e3e0cc4d3e0b8",
+        userId:userId,
         address: "42, answer of Universe",
         type: "house",
         appartment_number: "42",
@@ -109,7 +210,7 @@ describe('🏠 Testing estates routes', () => {
        console.log(err)
       })
   });
-  test('It should delete an estate', (done) => {
+  test('Delete an estate', (done) => {
     return request(app)
       .delete(`/estate/${id}`)
       .set('Authorization', `Bearer ${token}`)
