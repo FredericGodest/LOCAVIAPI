@@ -107,6 +107,22 @@ describe('🏠⚠ Testing error handlers of users routes ', () => {
            console.log(err)
           })
     });
+
+    test('Login a users with wrong password', async (done) => {
+        return await request(app)
+          .post('/login')
+          .send({
+            email: "unit-tested@locavi.fr",
+            password: "test",
+          })
+          .then((response) => {
+            expect(response.statusCode).toBe(400);
+            expect(response.type).toBe('application/json');
+            done();
+          }).catch((err) => {
+           console.log(err)
+          })
+    });
 });
 
 
