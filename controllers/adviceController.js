@@ -42,21 +42,30 @@ exports.new = (req, res, next) => {
         create_date : Date.now(),
         update_date : Date.now(),
     });
-
-    advice.save().then(
-      (advice) => {
-        res.status(201).json({
-          id: advice.id,
-          message: 'Advice saved successfully!'
-        });
-      }
-    ).catch(
-      (error) => {
-        res.status(400).json({
-          error: error
-        });
-      }
-    );
+    delta = (advice.dateOut - advice.dateIn)/(1000*60*60*24); // in days
+    console.log(delta)
+    if (delta < 0){
+      let error =  "date de départ avant date d'arrivée";
+      res.status(400).json({error: error});
+    } else if ( delta < 90 ){
+      let error =  "différence entre date d'arrivée et de départ inférieure à 3 mois";
+      res.status(400).json({error: error});
+    } else {
+      advice.save().then(
+        (advice) => {
+          res.status(201).json({
+            id: advice.id,
+            message: 'Advice saved successfully!'
+          });
+        }
+      ).catch(
+        (error) => {
+          res.status(400).json({
+            error: error
+          });
+        }
+      );
+    };
 };
 
 exports.searchById = (req, res, next) => {

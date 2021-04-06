@@ -12,7 +12,8 @@ var userController = require('./controllers/userController');
 
 // Advice routes
 router.get('/advice/all', auth, adviceController.index);
-router.post('/advice', auth, adviceController.new);
+//router.post('/advice', auth, adviceController.new);
+router.post('/advice', adviceController.new); // sans auth pour debug
 router.get('/advice/:id', adviceController.searchById);
 router.put('/advice/:id', auth, adviceController.update);
 router.delete('/advice/:id', auth, adviceController.delete);
