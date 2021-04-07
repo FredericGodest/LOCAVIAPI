@@ -13,7 +13,7 @@ beforeAll(done => {
     })
     .end((err, response) => {
       token = response.body.token;
-      userId = response.body.userId;
+      const userId = response.body.userId;
       done();
     });
 });
@@ -25,7 +25,7 @@ afterAll(done => {
 });
 
 
-describe('🧑⚠ Testing error handlers of users routes ', () => {
+describe('🧑⚠ Testing user creations ', () => {
     test('Create an user with wrong data', async (done) => {
       return await request(app)
         .post('/signup')
@@ -43,7 +43,7 @@ describe('🧑⚠ Testing error handlers of users routes ', () => {
         })
     });
 
-    test('Create an user with already created email', async (done) => {
+    test('Create a user with already created email', async (done) => {
         return await request(app)
           .post('/signup')
           .send({
@@ -77,63 +77,12 @@ describe('🧑⚠ Testing error handlers of users routes ', () => {
           })
     });
 
-    test('Login an user with missing data', async (done) => {
-        return await request(app)
-          .post('/login')
-          .send({
-            // Missing email for test
-            password:"password"
-          })
-          .then((response) => {
-            expect(response.statusCode).toBe(400);
-            expect(response.type).toBe('application/json');
-            done();
-          }).catch((err) => {
-           console.log(err)
-          })
-    });
-
-    test('Login an user with wrong data', async (done) => {
-        return await request(app)
-          .post('/login')
-          .send({
-            email: "unit-tested@locavi.fr",
-            password: "azerty",
-          })
-          .then((response) => {
-            expect(response.statusCode).toBe(400);
-            expect(response.type).toBe('application/json');
-            done();
-          }).catch((err) => {
-           console.log(err)
-          })
-    });
-
-    test('Login an user with wrong password', async (done) => {
-        return await request(app)
-          .post('/login')
-          .send({
-            email: "unit-tested@locavi.fr",
-            password: "test",
-          })
-          .then((response) => {
-            expect(response.statusCode).toBe(400);
-            expect(response.type).toBe('application/json');
-            done();
-          }).catch((err) => {
-           console.log(err)
-          })
-    });
-});
-
-
-describe('🧑 Testing users routes ', () => {
     test('Create an user', (done) => {
       return request(app)
         .post('/signup')
         .send({
-          username:randomUsername,
-          email:randomUsername + "@gmail.com",
+          username:"newTest",
+          email: "new.test@gmail.com",
           password:"azerty"
         })
         .then((response) => {
@@ -144,21 +93,173 @@ describe('🧑 Testing users routes ', () => {
          console.log(err)
         })
     });
+});
 
-    test('Login', (done) => {
-        return request(app)
-          .post('/login')
-          .send({
-            email: "email-test@gmail.com",
-            password: "azerty"
-          })
-          .then((response) => {
-            expect(response.statusCode).toBe(200);
-            expect(response.type).toBe('application/json');
-            done();
-          }).catch((err) => {
-           console.log(err)
-          })
-      });
+describe('🧑⚠ Testing login ', () => {
+  test('Login an user with missing data', async (done) => {
+    return await request(app)
+      .post('/login')
+      .send({
+        // Missing email for test
+        password:"password"
+      })
+      .then((response) => {
+        expect(response.statusCode).toBe(400);
+        expect(response.type).toBe('application/json');
+        done();
+      }).catch((err) => {
+       console.log(err)
+      })
+  });
+
+  test('Login an user with wrong data', async (done) => {
+    return await request(app)
+      .post('/login')
+      .send({
+        email: "unit-tested@locavi.fr",
+        password: "azerty",
+      })
+      .then((response) => {
+        expect(response.statusCode).toBe(400);
+        expect(response.type).toBe('application/json');
+        done();
+      }).catch((err) => {
+       console.log(err)
+      })
+  });
+
+  test('Login an user with wrong password', async (done) => {
+    return await request(app)
+      .post('/login')
+      .send({
+        email: "unit-tested@locavi.fr",
+        password: "test",
+      })
+      .then((response) => {
+        expect(response.statusCode).toBe(400);
+        expect(response.type).toBe('application/json');
+        done();
+      }).catch((err) => {
+       console.log(err)
+      })
+  });
+
+  test('Login User', (done) => {
+    return request(app)
+      .post('/login')
+      .send({
+        username:"newTest",
+        email: "new.test@gmail.com",
+        password: "azerty"
+      })
+      .then((response) => {
+        id = response.body.userId;
+        expect(response.statusCode).toBe(200);
+        expect(response.type).toBe('application/json');
+        done();
+      }).catch((err) => {
+       console.log(err)
+      })
+  });
 
 });
+
+    
+
+
+
+describe('🧑 Testing password modification ', () => {
+  test('Old password and new password are the same', (done) => {
+    return request(app)
+    .put(`/users/${id}`)
+    .send({
+      username:"newTest",
+      email: "new.test@gmail.com",
+      oldPassword: "azerty",
+      newPassword1: "azerty",
+      newPassword2: "azerty"
+    })
+    .then((response) => {
+      expect(response.statusCode).toBe(400);
+      expect(response.type).toBe('application/json');
+      done();
+    })
+    .catch((err) => {
+      console.log(err)
+     })
+  });
+
+  test('First new password and second new password are not the same', (done) => {
+    return request(app)
+    .put(`/users/${id}`)
+    .send({
+      username:"newTest",
+      email: "new.test@gmail.com",
+      oldPassword: "azerty",
+      newPassword1: "test",
+      newPassword2: "qwerty"
+    })
+    .then((response) => {
+      expect(response.statusCode).toBe(400);
+      expect(response.type).toBe('application/json');
+      done();
+    })
+    .catch((err) => {
+      console.log(err)
+     })
+  });
+
+
+  test('Change password', (done) => {
+    return request(app)
+    .put(`/users/${id}`)
+    .send({
+      username:"newTest",
+      email: "new.test@gmail.com",
+      oldPassword: "azerty",
+      newPassword1: "qwerty",
+      newPassword2: "qwerty"
+    })
+    .then((response) => {
+      expect(response.statusCode).toBe(201);
+      expect(response.type).toBe('application/json');
+      done();
+    })
+    .catch((err) => {
+      console.log(err)
+     })
+  });
+
+});
+
+describe('🧑 Deleting account ', () => {
+
+  test('Delete account with wrong id', (done) => {
+    return request(app)
+    .delete(`/users/test`)
+    .then((response) => {
+      expect(response.statusCode).toBe(400);
+      expect(response.type).toBe('application/json');
+      done();
+    })
+    .catch((err) => {
+      console.log(err)
+     })
+  })
+
+  test('Delete account', (done) => {
+    return request(app)
+    .delete(`/users/${id}`)
+    .then((response) => {
+      expect(response.statusCode).toBe(200);
+      expect(response.type).toBe('application/json');
+      done();
+    })
+    .catch((err) => {
+      console.log(err)
+     })
+  })
+});
+
+    
+  

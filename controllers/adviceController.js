@@ -43,7 +43,7 @@ exports.new = (req, res, next) => {
         update_date : Date.now(),
     });
     delta = (advice.dateOut - advice.dateIn)/(1000*60*60*24); // in days
-    console.log(delta)
+
     if (delta < 0){
       let error =  "date de départ avant date d'arrivée";
       res.status(400).json({error: error});
@@ -69,9 +69,8 @@ exports.new = (req, res, next) => {
 };
 
 exports.searchById = (req, res, next) => {
-    Advice.findOne({
-      _id: req.params.id
-    }).then(
+    Advice.findOne({_id: req.params.id})
+    .then(
       (advice) => {
         res.status(200).json(advice);
       }
