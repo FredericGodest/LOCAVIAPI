@@ -22,6 +22,7 @@ afterAll(done => {
   done()
 });
 
+// Getting all
 describe('🏠 Testing getting all estates ', () => {
   test('Get all estates', async (done) => {
     return request(app)
@@ -37,6 +38,7 @@ describe('🏠 Testing getting all estates ', () => {
   });
 });
 
+// Creation
 describe('🏠 Testing estate creation ', () => {
   test('Create an estate with wrong data', async (done) => {
     return await request(app)
@@ -96,6 +98,7 @@ describe('🏠 Testing estate creation ', () => {
 
 });
 
+// Find by id
 describe('🏠 Testing finding estate by Id', () => {
   test('Find an estate with wrong id', async (done) => {
     return request(app)
@@ -125,7 +128,7 @@ describe('🏠 Testing finding estate by Id', () => {
 
 });
 
-
+// find by location
 describe('🏠 Testing finding estate by Location', () => {
   test('Find estates by location with wrong data', async (done) => {
     return await request(app)
@@ -165,6 +168,7 @@ describe('🏠 Testing finding estate by Location', () => {
 
 });
 
+// Update
 describe('🏠 Testing update estate by Id', () => {
   test('Update an estate with wrong id', async (done) => {
     return request(app)
@@ -212,7 +216,7 @@ describe('🏠 Testing update estate by Id', () => {
         surface: 120
       })
       .then((response) => {
-        expect(response.statusCode).toBe(201);
+        expect(response.statusCode).toBe(202);
         expect(response.type).toBe('application/json');
         done();
       }).catch((err) => {
@@ -222,6 +226,7 @@ describe('🏠 Testing update estate by Id', () => {
 
 });
 
+// delete
 describe('🏠 Testing deleting estate by Id', () => {
   test('Delete an estate with wrond id', async (done) => {
     return request(app)

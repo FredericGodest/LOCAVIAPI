@@ -3,11 +3,11 @@ const Estate = require('../models/estateModel');
 exports.index = (req, res, next) => {
     Estate.find().then(
       (estates) => {
-        res.status(200).json(estates);
+        res.status(200).json(estates); // Request OK
       }
     ).catch(
       (error) => {
-        res.status(400).json({
+        res.status(400).json({ // Bad request
           error: error
         });
       }
@@ -35,14 +35,14 @@ exports.new = (req, res, next) => {
 
     estate.save().then(
       (estate) => {
-        res.status(201).json({
+        res.status(201).json({ // Creation code status
           id: estate.id,
           message: 'Estate saved successfully!'
         });
       }
     ).catch(
       (error) => {
-        res.status(400).json({
+        res.status(400).json({ // bad request
           error: error
         });
       }
@@ -54,11 +54,11 @@ exports.searchById = (req, res, next) => {
       _id: req.params.id
     }).then(
       (estate) => {
-        res.status(200).json(estate);
+        res.status(200).json(estate); // Code status OK
       }
     ).catch(
       (error) => {
-        res.status(404).json({
+        res.status(404).json({ // Code status not found
           error: error
         });
       }
@@ -74,11 +74,11 @@ exports.searchByLocation = function (req, res) {
    }
  }).then(
    (estates) => {
-     res.status(200).json(estates);
+     res.status(200).json(estates); // Code status OK
    }
  ).catch(
    (error) => {
-     res.status(404).json({
+     res.status(404).json({ // Code status not found
        error: error
      });
    }
@@ -105,13 +105,13 @@ exports.update = (req, res, next) => {
 
     Estate.updateOne({_id: req.params.id}, estate).then(
       () => {
-        res.status(201).json({
+        res.status(202).json({ // request accepted
           message: 'Estate updated successfully!'
         });
       }
     ).catch(
       (error) => {
-        res.status(400).json({
+        res.status(400).json({ // bad request
           error: error
         });
       }
@@ -121,13 +121,13 @@ exports.update = (req, res, next) => {
 exports.delete = (req, res, next) => {
     Estate.deleteOne({_id: req.params.id}).then(
       () => {
-        res.status(200).json({
+        res.status(200).json({ // request ok
           message: 'Estate deleted!'
         });
       }
     ).catch(
       (error) => {
-        res.status(400).json({
+        res.status(400).json({ // bad request
           error: error
         });
       }

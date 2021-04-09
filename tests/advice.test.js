@@ -22,6 +22,7 @@ afterAll(done => {
   done()
 });
 
+// getting all
 describe('📄 Testing getting all advices', () => {
   test('Get all advices', async (done) => {
     return request(app)
@@ -37,6 +38,7 @@ describe('📄 Testing getting all advices', () => {
   });
 });
 
+// creation
 describe('📄 testing advice creation', () => {
   test('Create an advice with missing data', async (done) => {
     return request(app)
@@ -96,6 +98,7 @@ describe('📄 testing advice creation', () => {
 
 });
 
+// getting by Id
 describe('📄 Testing getting advice by Id', () => {
   test('Find an advice by wrong id', async (done) => {
     return request(app)
@@ -125,7 +128,7 @@ describe('📄 Testing getting advice by Id', () => {
 
 });
 
-
+// modification
 describe('📄 Testing advice modification', () => {
   test('Update an advice with wrong id', async (done) => {
     return request(app)
@@ -175,7 +178,7 @@ describe('📄 Testing advice modification', () => {
         comment:"comment"
       })
       .then((response) => {
-        expect(response.statusCode).toBe(201);
+        expect(response.statusCode).toBe(202);
         expect(response.type).toBe('application/json');
         done();
       }).catch((err) => {
@@ -185,6 +188,7 @@ describe('📄 Testing advice modification', () => {
 
 });
 
+// delete
 describe('📄 Testing deleting advices', () => {
   test('Delete an advice with wrong id', async (done) => {
     return request(app)

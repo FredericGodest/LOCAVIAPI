@@ -3,11 +3,11 @@ const Advice = require('../models/adviceModel');
 exports.index = (req, res, next) => {
     Advice.find().then(
       (advices) => {
-        res.status(200).json(advices);
+        res.status(200).json(advices); // request OK
       }
     ).catch(
       (error) => {
-        res.status(400).json({
+        res.status(400).json({ // bad request
           error: error
         });
       }
@@ -53,14 +53,14 @@ exports.new = (req, res, next) => {
     } else {
       advice.save().then(
         (advice) => {
-          res.status(201).json({
+          res.status(201).json({ // creation code status
             id: advice.id,
             message: 'Advice saved successfully!'
           });
         }
       ).catch(
         (error) => {
-          res.status(400).json({
+          res.status(400).json({ // bad request
             error: error
           });
         }
@@ -72,11 +72,11 @@ exports.searchById = (req, res, next) => {
     Advice.findOne({_id: req.params.id})
     .then(
       (advice) => {
-        res.status(200).json(advice);
+        res.status(200).json(advice); // request OK
       }
     ).catch(
       (error) => {
-        res.status(404).json({
+        res.status(404).json({ // not found
           error: error
         });
       }
@@ -115,13 +115,13 @@ exports.update = (req, res, next) => {
 
     Advice.updateOne({_id: req.params.id}, advice).then(
       () => {
-        res.status(201).json({
+        res.status(202).json({ // Request accepted
           message: 'Advice updated successfully!'
         });
       }
     ).catch(
       (error) => {
-        res.status(400).json({
+        res.status(400).json({ // bad request
           error: error
         });
       }
@@ -131,13 +131,13 @@ exports.update = (req, res, next) => {
 exports.delete = (req, res, next) => {
     Advice.deleteOne({_id: req.params.id}).then(
       () => {
-        res.status(200).json({
+        res.status(200).json({ // request OK
           message: 'Advice deleted!'
         });
       }
     ).catch(
       (error) => {
-        res.status(400).json({
+        res.status(400).json({ // bad request
           error: error
         });
       }

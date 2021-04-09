@@ -24,7 +24,7 @@ afterAll(done => {
   done()
 });
 
-
+// signup
 describe('🧑 Testing user creations ', () => {
     test('Create a user with missing data', async (done) => {
       return await request(app)
@@ -95,6 +95,7 @@ describe('🧑 Testing user creations ', () => {
     });
 });
 
+// login
 describe('🧑 Testing login ', () => {
   test('Login a user with missing data', async (done) => {
     return await request(app)
@@ -154,7 +155,7 @@ describe('🧑 Testing login ', () => {
       })
       .then((response) => {
         id = response.body.userId;
-        expect(response.statusCode).toBe(200);
+        expect(response.statusCode).toBe(202);
         expect(response.type).toBe('application/json');
         done();
       }).catch((err) => {
@@ -164,8 +165,7 @@ describe('🧑 Testing login ', () => {
 
 });
 
-
-
+// update password
 describe('🧑 Testing password modification ', () => {
   test('Old password and new password are the same', (done) => {
     return request(app)
@@ -281,7 +281,7 @@ describe('🧑 Testing password modification ', () => {
       newPassword2: "qwerty"
     })
     .then((response) => {
-      expect(response.statusCode).toBe(201);
+      expect(response.statusCode).toBe(202);
       expect(response.type).toBe('application/json');
       done();
     })
@@ -292,6 +292,7 @@ describe('🧑 Testing password modification ', () => {
 
 });
 
+// delete
 describe('🧑 Deleting account ', () => {
   test('Delete account with wrong id', (done) => {
     return request(app)

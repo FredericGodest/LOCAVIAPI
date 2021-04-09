@@ -13,10 +13,10 @@ exports.signup = (req, res, next) => {
                 password: hash
             });
             user.save()
-                .then(() => res.status(201).json({ message: "User created ! "}))
-                .catch(error => res.status(400).json({ error }));
+                .then(() => res.status(201).json({ message: "User created ! "})) // creation
+                .catch(error => res.status(400).json({ error })); // Bad request
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(error => res.status(500).json({ error })); // internal servor error
 };
 
 
@@ -24,14 +24,14 @@ exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
         .then((user) => {
             if (!user) {
-                return res.status(400).json({ error: "User not found ! "});
+                return res.status(400).json({ error: "User not found ! "}); // Bad Request
             } else {
                 bcrypt.compare(req.body.password, user.password)
                 .then(valid => {
                     if (!valid) {
                         return res.status(401).json({ error: "Wrong password! "}); // Unauthorised status code
                     }
-                    res.status(200).json({
+                    res.status(202).json({ // accepted status code
                         userId: user._id,
                         token: jwt.sign(
                             { userId: user._id },
@@ -41,28 +41,29 @@ exports.login = (req, res, next) => {
                         message: "Connected"
                     });
                 })
-                .catch(error => res.status(500).json({ error }));
+                .catch(error => res.status(500).json({ error })); // internal servor error
             };
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(error => res.status(500).json({ error })); // internal servor error
 };
 
 
 exports.delete = (req, res, next) => {
     User.deleteOne({_id: req.params.id}).then(
       () => {
-        res.status(200).json({
+        res.status(200).json({ // request OK
           message: 'User deleted!'
         });
       }
     ).catch(
       (error) => {
-        res.status(400).json({
+        res.status(400).json({ // bad request
           error: error
         });
       }
     );
 };
+
 
 exports.passwordUpdate = (req, res, next) => {
     const oldPassword = req.body.oldPassword;
@@ -73,7 +74,7 @@ exports.passwordUpdate = (req, res, next) => {
     User.findOne({ _id: req.params.id})
     .then((user) => {
         if (!user) {
-            return res.status(400).json({ error: "User not found ! "});
+            return res.status(400).json({ error: "User not found ! "}); // bad request
         } else {
             // check if old password is correct
             bcrypt.compare(oldPassword, user.password)
@@ -82,7 +83,7 @@ exports.passwordUpdate = (req, res, next) => {
                         return res.status(401).json({ error: "Wrong current password! "}); // Unauthorised Error
                     // check if current password and old password are identical
                     } else if (newPassword1 === oldPassword) {
-                        res.status(400).json({ error: "current and new password are identical" }); // mistake Error
+                        res.status(400).json({ error: "current and new password are identical" }); // bad request
                     // check if password 1 and 2 are identical
                     } else if (newPassword1 === newPassword2 ) { 
                         bcrypt.hash(newPassword1, saltRound)
@@ -95,18 +96,17 @@ exports.passwordUpdate = (req, res, next) => {
                                 });
 
                                 User.updateOne({_id: req.params.id}, user)
-                                    .then(() => res.status(201).json({ message: "User password updated ! "}))
+                                    .then(() => res.status(202).json({ message: "User password updated ! "})) // Request accepted
                                     .catch(error => res.status(400).json({ error }));
                                 })
-                            .catch(error => res.status(500).json({ error })); //Servor Error
+                            .catch(error => res.status(500).json({ error })); // Servor Error
                     
                     } else {
-                        res.status(400).json({ error: "Password 1 and 2 are not identical" }); // mistake Error
+                        res.status(400).json({ error: "Password 1 and 2 are not identical" }); // bad request
                     }
                 })
-                .catch(error => res.status(500).json({ error })); //Error servor
+                .catch(error => res.status(500).json({ error })); // internal servor error
         }
     })
-    .catch(error => res.status(500).json({ error })); //Error servor
-    
+    .catch(error => res.status(500).json({ error })); // internal servor error
 }
