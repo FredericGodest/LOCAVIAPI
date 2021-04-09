@@ -25,8 +25,8 @@ afterAll(done => {
 });
 
 
-describe('🧑⚠ Testing user creations ', () => {
-    test('Create an user with wrong data', async (done) => {
+describe('🧑 Testing user creations ', () => {
+    test('Create a user with missing data', async (done) => {
       return await request(app)
         .post('/signup')
         .send({
@@ -60,7 +60,7 @@ describe('🧑⚠ Testing user creations ', () => {
           })
     });
 
-    test('Create an user with already created usename', async (done) => {
+    test('Create a user with already created usename', async (done) => {
         return await request(app)
           .post('/signup')
           .send({
@@ -77,7 +77,7 @@ describe('🧑⚠ Testing user creations ', () => {
           })
     });
 
-    test('Create an user', (done) => {
+    test('Create a user', (done) => {
       return request(app)
         .post('/signup')
         .send({
@@ -95,8 +95,8 @@ describe('🧑⚠ Testing user creations ', () => {
     });
 });
 
-describe('🧑⚠ Testing login ', () => {
-  test('Login an user with missing data', async (done) => {
+describe('🧑 Testing login ', () => {
+  test('Login a user with missing data', async (done) => {
     return await request(app)
       .post('/login')
       .send({
@@ -112,7 +112,7 @@ describe('🧑⚠ Testing login ', () => {
       })
   });
 
-  test('Login an user with wrong data', async (done) => {
+  test('Login a user with wrong data', async (done) => {
     return await request(app)
       .post('/login')
       .send({
@@ -128,15 +128,15 @@ describe('🧑⚠ Testing login ', () => {
       })
   });
 
-  test('Login an user with wrong password', async (done) => {
+  test('Login a user with wrong password', async (done) => {
     return await request(app)
       .post('/login')
       .send({
-        email: "unit-tested@locavi.fr",
+        email: "new.test@gmail.com",
         password: "test",
       })
       .then((response) => {
-        expect(response.statusCode).toBe(400);
+        expect(response.statusCode).toBe(401);
         expect(response.type).toBe('application/json');
         done();
       }).catch((err) => {
@@ -164,8 +164,6 @@ describe('🧑⚠ Testing login ', () => {
 
 });
 
-    
-
 
 
 describe('🧑 Testing password modification ', () => {
@@ -189,7 +187,69 @@ describe('🧑 Testing password modification ', () => {
      })
   });
 
-  test('First new password and second new password are not the same', (done) => {
+  test('Wrong old password', (done) => {
+    return request(app)
+    .put(`/users/${id}`)
+    .send({
+      username:"newTest",
+      email: "new.test@gmail.com",
+      oldPassword: "test",
+      newPassword1: "azerty",
+      newPassword2: "azerty"
+    })
+    .then((response) => {
+      expect(response.statusCode).toBe(401);
+      expect(response.type).toBe('application/json');
+      done();
+    })
+    .catch((err) => {
+      console.log(err)
+     })
+  });
+
+  test('User not found', (done)=> {
+    const id_test = "606da6d58b016dd81795c302"
+    return request(app)
+    .put(`/users/${id_test}`)
+    .send({
+      username:"test",
+      email: "new.test@gmail.com",
+      oldPassword: "azerty",
+      newPassword1: "test",
+      newPassword2: "qwerty"
+    })
+    .then((response) => {
+      expect(response.statusCode).toBe(400);
+      expect(response.type).toBe('application/json');
+      done();
+    })
+    .catch((err) => {
+      console.log(err)
+     })
+  });
+
+  test('User id with tipo', (done)=> {
+    const id_test = "test_tipo"
+    return request(app)
+    .put(`/users/${id_test}`)
+    .send({
+      username:"test",
+      email: "new.test@gmail.com",
+      oldPassword: "azerty",
+      newPassword1: "test",
+      newPassword2: "qwerty"
+    })
+    .then((response) => {
+      expect(response.statusCode).toBe(500);
+      expect(response.type).toBe('application/json');
+      done();
+    })
+    .catch((err) => {
+      console.log(err)
+     })
+  });
+
+  test('First new password and second new password are not the same', async (done) => {
     return request(app)
     .put(`/users/${id}`)
     .send({
@@ -233,7 +293,6 @@ describe('🧑 Testing password modification ', () => {
 });
 
 describe('🧑 Deleting account ', () => {
-
   test('Delete account with wrong id', (done) => {
     return request(app)
     .delete(`/users/test`)
